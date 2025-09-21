@@ -356,9 +356,7 @@ This project was built for the **Google GenAI Exchange Hackathon** with the them
 ## 📞 Support
 
 For questions, issues, or contributions:
-- 📧 Email: [Your Email]
-- 🐛 Issues: [GitHub Issues]
-- 💬 Discussions: [GitHub Discussions]
+- 📧 Email: iabhayrao@gmail.com
 
 ---
 
