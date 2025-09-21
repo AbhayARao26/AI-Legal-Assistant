@@ -1,0 +1,65 @@
+# Docker configuration for Legal AI system
+version: '3.8'
+
+services:
+  # Backend API service
+  legal-ai-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "8000:8000"
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - PINECONE_API_KEY=${PINECONE_API_KEY}
+      - PINECONE_ENVIRONMENT=${PINECONE_ENVIRONMENT}
+      - PINECONE_INDEX_NAME=${PINECONE_INDEX_NAME}
+      - DATABASE_URL=sqlite:///./legal_ai.db
+    volumes:
+      - ./uploads:/app/uploads
+      - ./data:/app/data
+    depends_on:
+      - db
+    networks:
+      - legal-ai-network
+
+  # Frontend service
+  legal-ai-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "8501:8501"
+    environment:
+      - API_BASE_URL=http://legal-ai-backend:8000
+    depends_on:
+      - legal-ai-backend
+    networks:
+      - legal-ai-network
+
+  # Database service (optional, for production use)
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=legal_ai
+      - POSTGRES_USER=legal_ai_user
+      - POSTGRES_PASSWORD=legal_ai_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - legal-ai-network
+
+  # Redis for caching (optional)
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - legal-ai-network
+
+volumes:
+  postgres_data:
+
+networks:
+  legal-ai-network:
+    driver: bridge

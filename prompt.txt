@@ -1,0 +1,99 @@
+You are an expert AI software engineer. I want you to build me a complete Agentic AI system for the hackathon problem:
+"Generative AI for Demystifying Legal Documents"
+The solution should simplify complex legal documents into clear, accessible guidance. Users should be able to upload documents, get simplified summaries, extract important clauses, understand legal definitions, and ask questions about the content.
+The architecture must be multi-agent and modular, with agents communicating via a central controller.
+
+🔹 Backend Requirements (Python):
+1. Tech Stack
+- Python 3.10
+- FastAPI for backend API
+- LangChain for LLM orchestration
+- Pinecone for document retrieval
+- Gemini 2.5 flash for LLM tasks
+- SQLite for state persistence
+- pydantic for schema validation
+
+2. Agentic Architecture
+Implement the following agents as modular classes (each agent should have a run(input, state) method):
+- Document Retrieval & Analysis Agent:
+    Handles document ingestion (PDF/DOCX/TXT).
+    Splits documents into chunks.
+    Embeds and stores in vector DB (Pinecone).
+    Handles semantic search.
+- Summarization Agent:
+    Provides abstractive summaries of the document.
+    Summaries must be hierarchical: (overall, section-wise, clause-level).
+- Clauses & Terms Extraction Agent:
+    Extracts obligations, rights, penalties, timelines, renewal/termination conditions.
+    Returns them as structured JSON.
+- Legal Definitions Agent:
+    Detects complex legal terms and explains them in simple layman-friendly language.
+    Uses dictionary + LLM explanation.
+- Q/A Agent:
+    Users can ask natural language questions.
+    Retrieves relevant chunks from the document and answers with citations.
+- Routing, Evaluation & State Management Agent:
+    Central controller deciding which agent to route the request to.
+    Maintains user session state (uploaded docs, conversation history, extracted summaries).
+    Evaluates if user’s query requires summarization, extraction, definition lookup, or Q/A.
+
+3. Backend Endpoints
+    POST /upload_document → Upload & process document (store embeddings + metadata).
+    POST /summarize → Get summary (overall or section-wise).
+    POST /extract_clauses → Extract obligations, penalties, etc.
+    POST /define_terms → Get simplified definitions of legal jargon.
+    POST /ask → Ask natural language Q/A.
+    POST /route → Accepts query and auto-routes to correct agent.
+    GET /session_state → Get session state/history.
+
+4. Data Structures
+    Store embeddings + metadata in Pinecone.
+    Store extracted clauses in JSON format.
+    Maintain session state in SQLite/Postgres.
+
+
+🔹 Frontend Requirements (Streamlit)
+1. Upload Page
+    - Upload legal document (PDF/DOCX).
+    - Show metadata (pages, sections).
+2. Dashboard
+    - Tabs for:
+        📄 Document Summary
+        📜 Clauses & Terms Extraction
+        📖 Legal Definitions
+        ❓ Ask a Question
+    - Each tab calls backend endpoints.
+3. Conversation Window
+    - Persistent chat interface where the Q/A Agent responds.
+    - Chat history stored and retrieved from backend session state.
+4. UI Features
+    - Highlight legal terms with tooltips (hover → simple definition).
+    - Expandable accordions for summaries (overall → section → clause).
+    - JSON output rendered as formatted tables.
+
+🔹 Workflow Example
+- User uploads a PDF.
+- Retrieval Agent processes → stores embeddings in Pinecone.
+- User clicks “Summarize”.
+- Summarization Agent generates multi-level summary.
+- User clicks “Extract Clauses”.
+- Clauses Agent extracts obligations, penalties, etc. in structured JSON.
+- User selects the word “Indemnification” and chooses the definition option.
+- Definitions Agent gives simple explanation.
+- User asks: “What happens if I terminate early?”
+- Q/A Agent searches embeddings, retrieves termination clause, answers with citations.
+- Routing Agent ensures queries go to the right agent seamlessly.
+
+🔹 Bonus Features
+Add multi-document comparison (e.g., compare two documents).
+Add explain like I’m 5 (ELI5) mode for summaries.
+Add compliance checker agent: highlights risky clauses (e.g., arbitration, indemnity).
+
+🔹 Deliverables
+backend/ → Python FastAPI code with modular agents.
+frontend/ → Streamlit app calling backend APIs.
+db/ → SQLite/Postgres schema + FAISS/Chroma vector store.
+requirements.txt → Dependencies.
+README.md → Setup + usage instructions.
+
+⚡ Now, please generate the entire backend in Python (with the agentic architecture), and the frontend in Streamlit. Ensure the code is modular, production-ready, and hackathon-deployable.
