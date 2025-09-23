@@ -8,7 +8,10 @@
 A comprehensive **Agentic AI System** that transforms complex legal documents into clear, accessible insights. Built for the Google GenAI Exchange Hackathon with a multi-agent architecture that simplifies legal document analysis through intelligent summarization, clause extraction, and natural language Q&A.
 
 Take a look at the working here:
-https://github.com/user-attachments/assets/f1473000-76d6-4657-a238-c67604ec25c5
+
+
+https://github.com/user-attachments/assets/7de61e86-2bfc-4156-88b5-d56715f83f50
+
 
 
 ## 🌟 Features
